@@ -3,34 +3,48 @@ import time
 import random
 
 def set_num_games():
-	""" \
-	Predetermining number of games we want to play. There should be an odd
-	number of games to easily determine a winner.
+
+	""" 
+	Predetermining number of games we want to play. 
+	There should be an odd number of games to easily 
+	determine a winner.
 	"""
 	
 	done = False
 
 	while not done:
-		num_games = raw_input("How many games do you want to play? (Odd number over 2) ")
-
-		if num_games >= 3:
+		num_games = raw_input("How many games? (Odd number over 2) ")
+		
+		try:
+			# str to int
+			num_games = int(num_games)
+		except:
+			try:
+				float(num_games)
+				print "Please give an integer."
+				continue
+			except:
+				print "Must be a number. Try again."
+				continue
+				
+		if num_games >= 3 and num_games % 2 == 1:
 			done = True
-		else :
+		else:
 			print "Try again with a valid odd number."	
 			
-	num_to_win = int(math.ceil(num_games / 2))
-	print "Best %s out of %s." % (num_to_win, num_game)
-	return num_to_win, num_of_games
+	num_to_win = int(math.ceil(num_games / 2.0))
+	print "~ Best %s out of %s ~" % (num_to_win, num_games)
+	return num_to_win, num_games
 			
 def countdown():
-	print "Rock"
-	time.sleep(.5)
+	print "\nRock"
+	time.sleep(1)
 	print "Paper"
-	time.sleep(.5)
+	time.sleep(1)
 	print "Scissors"
-	time.sleep(.5)
-	print "Shoot!"
-	time.sleep(.5)
+	time.sleep(1)
+	print "SHOOT!\n"
+	time.sleep(.3)
 
 def game(num_to_win, num_games):
 	comp_score = 0
@@ -41,13 +55,14 @@ def game(num_to_win, num_games):
 		choices = ['rock', 'paper', 'scissors']
 		comp_ans = random.choice(choices);
 		
-		user_ans = raw_input("Rock, Paper, or Scissors?")
+		user_ans = raw_input("Rock, Paper, or Scissors? ")
 		user_ans = user_ans.lower()
 		
 		countdown()
 	
 		if user_ans == comp_ans:
 			print "It was a tie. Try again!"
+			continue
 		# ROCK
 		elif user_ans == 'rock':
 			if comp_ans == 'paper':
@@ -77,18 +92,25 @@ def game(num_to_win, num_games):
 				print "Computer answered paper. You win this round :D"
 				user_score += 1
 			games_played += 1
+		# INVALID
+		else:
+			print "Invalid option. Try again."
+			continue
 		
+		# Check if already won
 		if user_score == num_to_win:
-			print "You won! %s - %s" % (user_score, comp_score)
+			print "You WON! %s - %s" % (user_score, comp_score)
 			break
 			
 		elif comp_score == num_to_win:
 			print "You lost... %s - %s" % (user_score, comp_score)
 			break
-		
-answer = raw_input("Do you want to play? (yes/no) ");
-if answer == "yes":
+		else:
+			print "Next round!"
+			
+answer = raw_input("Do you want to play Rock, Paper, Scissors? (yes/no) ");
+if answer == "yes" or answer == 'y' or answer == "Yes":
 	num_to_win, num_games = set_num_games()
-	game(num_to_win, num_of_games)
-elif answer == "no":
+	game(num_to_win, num_games)
+elif answer == "no" or answer == 'n' or answer == "No":
 	print "Bye..."
